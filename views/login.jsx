@@ -7,7 +7,7 @@ class LoginPage extends React.Component {
       <ApplicationLayout data={this.props}>
         <div className="card card-register mx-auto mt-5">
           <div className="card-header bg-custom text-light h5">
-            Login
+            Login Portal
           </div>
           <div className="card-body">
             <div id="login-form" />
