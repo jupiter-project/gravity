@@ -1,8 +1,24 @@
+sudo: required
+services:
+  - docker
 language: node_js
 node_js:
   - "9"
-os: ubuntu
-scripts:
-  - npm install
-  - npm test
-fast_finish: true
+before_install:
+  - npm i -g npm@latest
+install:
+  - if [$TRAVIS_BRANCH  == 'master'];
+    then docker build -t sigwotechnologies/gravity:latest ./;
+    else docker build -t sigwotechnologies/gravity:$TRAVIS_BRANCH ./;
+    fi
+script:
+  - if [$TRAVIS_BRANCH  == 'master'];
+    then docker run --name gravity sigwotechnologies/gravity:latest npm run test;
+    else docker run --name gravity sigwotechnologies/gravity:$TRAVIS_BRANCH npm run test;
+    fi
+after_success:
+  - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+  - if [$TRAVIS_BRANCH  == 'master'];
+    then docker push sigwotechnologies/gravity:latest;
+    else docker push sigwotechnologies/gravity:$TRAVIS_BRANCH;
+    fi
