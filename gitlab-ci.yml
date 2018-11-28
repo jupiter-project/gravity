@@ -1,0 +1,15 @@
+sudo: required
+services:
+  - docker
+language: node_js
+node_js:
+  - "9"
+before_install:
+  - npm i -g npm@latest
+install:
+  - docker build -t sigwotechnologies/jupiter-gravity:latest ./
+script:
+  - docker run --name jupiter-gravity sigwotechnologies/jupiter-gravity:latest npm run test
+after_success:
+  - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+  - docker push sigwotechnologies/jupiter-gravity:latest
