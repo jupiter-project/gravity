@@ -2,9 +2,14 @@
 
 clear
 
-echo "Now install git and node.js......."
+echo "Now install git and node.js..."
 
 sudo apt-get update
+
+clear
+
+echo "Now installing environment dependencies..."
+sudo apt-get install make g++ python-dev -y
 
 clear
 
