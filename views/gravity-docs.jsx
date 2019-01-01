@@ -66,7 +66,7 @@ class GravityDocs extends React.Component {
                 </div>
 
               </div>
-              <div className="modal fade show" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+              <div className="modal fade show" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel">
                 <div className="modal-dialog" role="document">
                   <div className="modal-content">
                     <div className="modal-header">
