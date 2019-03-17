@@ -126,14 +126,14 @@ export default class ApplicationLayout extends React.Component {
                 <a className="nav-link" href="/signup">
                   <i className="fa fa-fw fa-user-plus" />
                   {' '}
-                  <span>Sign up</span>
+                  <span>Sign Up</span>
                 </a>
               </li>
               <li className="nav-item">
                 <a className="nav-link" href="/login">
                   <i className="fa fa-fw fa-sign-in" />
                   {' '}
-                  <span>Login</span>
+                  <span>Log In</span>
                 </a>
               </li>
             </ul>
@@ -295,14 +295,14 @@ export default class ApplicationLayout extends React.Component {
                 <a className="nav-link" href="/signup">
                   <i className="fa fa-fw fa-user-plus" />
                   {' '}
-                  <span>Sign up</span>
+                  <span>Sign Up</span>
                 </a>
               </li>
               <li className="nav-item">
                 <a className="nav-link" href="/login">
                   <i className="fa fa-fw fa-sign-in" />
                   {' '}
-                  <span>Login</span>
+                  <span>Log In</span>
                 </a>
               </li>
             </ul>
@@ -385,7 +385,7 @@ export default class ApplicationLayout extends React.Component {
           <div
             className="modal fade"
             id="logoutModal"
-            tabindex="-1"
+            tabIndex="-1"
             role="dialog"
             aria-labelledby=" "
             aria-hidden="true"
