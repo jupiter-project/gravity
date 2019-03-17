@@ -11,6 +11,7 @@ export default class ApplicationLayout extends React.Component {
   render() {
     const linksList = (
       <div>
+<li className="nav-item"><a className="nav-link" href="/public_voting"><i className="fa fa-fw fa-file" />{' '}<span>Public Voting</span></a></li>
 {false && 'Generated plop links go here'}
       </div>
     );

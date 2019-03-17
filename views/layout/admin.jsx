@@ -291,12 +291,12 @@ export default class ApplicationLayout extends React.Component {
                   <div className="copyright text-center my-auto">
                     {process.env.APPNAME ? (
                       <div>
-                        <div>Copyright © 2018 YourBrand</div>
+                        <div>Copyright © 2019 YourBrand</div>
                         <div className="mt-2 small">powered by Gravity</div>
                       </div>
                     ) : (
                       <div>
-                        <div>Copyright © 2018 Sigwo Technologies</div>
+                        <div>Copyright © 2019 Sigwo Technologies</div>
                         <div className="mt-2 small">powered by Gravity</div>
                       </div>
                     )}
