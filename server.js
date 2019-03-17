@@ -23,9 +23,6 @@ const bodyParser = require('body-parser');
 const React = require('react');
 const ReactDOMServer = require('react-dom/server');
 
-// Loads less middleware
-const lessMiddleware = require('less-middleware');
-
 // Loads request library
 // const request = require('request')
 
@@ -62,12 +59,6 @@ app.use((req, res, next) => {
 // Here is where we load the api routes. We put them here so passport deserializer
 // is not called everytime we make an api call to them
 require('./config/api.js')(app);
-
-// Sets less middleware
-app.use(lessMiddleware('/less', {
-  dest: '/css',
-  pathRoot: path.join(__dirname, 'public'),
-}));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
