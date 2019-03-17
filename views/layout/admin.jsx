@@ -14,9 +14,14 @@ export default class ApplicationLayout extends React.Component {
         <a className="navbar-brand" href="/">
           {process.env.APPNAME ? (
             <div>
-              <i className="fa fa-fw fa-globe" alt="yourBrand" />
+              <img
+                src="/img/sigwo-shield2.png"
+                //className="pb-1"
+                alt="sigwo"
+                height="32px"
+              />
               {' '}
-              <span>YourBrand</span>
+              <span>Sigwo Technologies</span>
             </div>
           ) : (
             <div>
@@ -86,11 +91,16 @@ export default class ApplicationLayout extends React.Component {
         <div className="container-fluid">
           <a className="navbar-brand" href="/gravity">
             {process.env.APPNAME ? (
-              <div>
-                <i className="fa fa-fw fa-globe" alt="yourBrand" />
-                {' '}
-                <span>YourBrand</span>
-              </div>
+            <div>
+              <img
+                src="/img/sigwo-shield2.png"
+                //className="pb-1"
+                alt="sigwo"
+                height="32px"
+              />
+              {' '}
+              <span>Sigwo Technologies</span>
+            </div>
             ) : (
               <div>
                 <img

@@ -14,7 +14,11 @@ class HomeComponent extends React.Component {
   render() {
     return (
       <div className="container">
-        <div className="page-title">Welcome to your Gravity App</div>
+        <div className="page-title">Election 2020 <p>
+        Please touch the links on the left to view  
+        the candidates and submit your votes.
+        </p>
+        </div>
       </div>
     );
   }

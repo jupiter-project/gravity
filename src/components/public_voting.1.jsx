@@ -327,45 +327,21 @@ class PublicVotingComponent extends React.Component {
                 <div className="">
                     <div className="card col-md-8 col-lg-8 p-0 mx-auto my-4">
                         <div className="card-header">
-                            Election 2020
+                            Record vote
                         </div>
                         <div className="card-body form-group">
-                        <div className="row">
-                          <div className="col-6">
-                            <div className="row"> 
-                              <table className="table table-striped table-bordered table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Candidate</th>
-                                        <th>Party</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                  <tr>
-                                    <td>Steven</td>
-                                    <td>Republican</td>
-                                  </tr>
-                                  <tr>
-                                    <td>Raf</td>
-                                    <td>RCrypto</td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-                          <div className="col-6">
-                            <div className="row">
+                            <div className="row p-2">
                                 <div className="col-lg-12 col-md-12">
                                     <label>Position</label>
-                                    <input placeholder="Type in the Position from the table" value={this.state.Position } className="form-control" onChange={this.handleChange.bind(this, 'Position')} /><br />
+                                    <input placeholder="" value={this.state.Position } className="form-control" onChange={this.handleChange.bind(this, 'Position')} /><br />
                                 </div>
                                 <div className="col-lg-12 col-md-12">
                                     <label>Candidate</label>
-                                    <input placeholder="Type in the Candidate's name" value={this.state.Candidate } className="form-control" onChange={this.handleChange.bind(this, 'Candidate')} /><br />
+                                    <input placeholder="" value={this.state.Candidate } className="form-control" onChange={this.handleChange.bind(this, 'Candidate')} /><br />
                                 </div>
                                 <div className="col-lg-12 col-md-12">
                                     <label>Party</label>
-                                    <input placeholder="Type in the Candidate's party" value={this.state.Party } className="form-control" onChange={this.handleChange.bind(this, 'Party')} /><br />
+                                    <input placeholder="" value={this.state.Party } className="form-control" onChange={this.handleChange.bind(this, 'Party')} /><br />
                                 </div>
                                 <div className="col-lg-12 col-md-12">
                                     <label>VoteFor</label>
@@ -377,32 +353,30 @@ class PublicVotingComponent extends React.Component {
                                     </div>
                                 </div>
                             </div>
-                            <div className="row p-1">
+                            <div className="row p-3">
                                 <div className="col-lg-12 col-md-12 col-xs-12 text-center">
                                     <button type="button" className="btn btn-outline btn-default" disabled={this.state.submitted} onClick={this.createRecord.bind(this)}><i className="glyphicon glyphicon-edit"></i>  {this.state.submitted ? 'Saving...' : 'Save'}</button>
                                 </div>
                             </div>
-                          </div>
                         </div>
-                      </div>
                     </div>
                 </div>
             </div>
 
             <table className="table table-striped table-bordered table-hover">
-              <thead>
-                  <tr>
-                      <th>Position</th>
-                      <th>Candidate</th>
-                      <th>Party</th>
-                      <th>VoteFor</th>
-                      <th>Created on</th>
-                      <th></th>
-                  </tr>
-              </thead>
-              <tbody>
-                  {recordList}
-              </tbody>
+                <thead>
+                    <tr>
+                        <th>Position</th>
+                        <th>Candidate</th>
+                        <th>Party</th>
+                        <th>VoteFor</th>
+                        <th>Created on</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {recordList}
+                </tbody>
             </table>
 
         </div>
