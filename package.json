@@ -18,7 +18,9 @@
     "dev": "nodemon server.js && webpack -w"
   },
   "jest": {
-    "setupFiles": ["<rootDir>/jestSetup.js"]
+    "setupFiles": [
+      "<rootDir>/jestSetup.js"
+    ]
   },
   "authors": [
     {
