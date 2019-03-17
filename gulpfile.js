@@ -1,4 +1,3 @@
-// Load plugins
 const autoprefixer = require('gulp-autoprefixer');
 const cleanCSS = require('gulp-clean-css');
 const gulp = require('gulp');
