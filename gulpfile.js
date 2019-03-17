@@ -1,92 +1,99 @@
-var gulp = require('gulp');
-var sass = require('gulp-sass');
-var cleanCSS = require('gulp-clean-css');
-var rename = require("gulp-rename");
-var uglify = require('gulp-uglify');
+// Load plugins
+const autoprefixer = require('gulp-autoprefixer');
+const cleanCSS = require('gulp-clean-css');
+const gulp = require('gulp');
+const del = require('del');
+const merge = require('merge-stream');
+const plumber = require('gulp-plumber');
+const rename = require('gulp-rename');
+const sass = require('gulp-sass');
+const uglify = require('gulp-uglify');
 
-// Copy third party libraries from /node_modules into /vendor
-gulp.task('vendor', function() {
-  // Bootstrap
-  gulp.src([
-      'node_modules/bootstrap/dist/**/*',
-      '!node_modules/bootstrap/dist/css/bootstrap-grid*',
-      '!node_modules/bootstrap/dist/css/bootstrap-reboot*'
-    ])
-    .pipe(gulp.dest('public/vendor/bootstrap'))
-  // ChartJS
-  gulp.src([
-      'node_modules/chart.js/dist/*.js'
-    ])
-    .pipe(gulp.dest('public/vendor/chart.js'))
-  // DataTables
-  gulp.src([
-      'node_modules/datatables.net/js/*.js',
-      'node_modules/datatables.net-bs4/js/*.js',
-      'node_modules/datatables.net-bs4/css/*.css'
-    ])
-    .pipe(gulp.dest('public/vendor/datatables/'))
+// Clean vendor
+function clean() {
+  return del(['./vendor/']);
+}
+
+// Bring third party dependencies from node_modules into vendor directory
+function modules() {
+  // Bootstrap JS
+  const bootstrap = gulp.src('./node_modules/bootstrap/dist/js/**/*')
+    .pipe(gulp.dest('./public/vendor/bootstrap/js'));
   // Font Awesome
-  gulp.src([
-      'node_modules/font-awesome/**/*',
-      '!node_modules/font-awesome/{less,less/*}',
-      '!node_modules/font-awesome/{scss,scss/*}',
-      '!node_modules/font-awesome/.*',
-      '!node_modules/font-awesome/*.{txt,json,md}'
-    ])
-    .pipe(gulp.dest('public/vendor/font-awesome'))
+  const fontAwesome = gulp.src([
+    'node_modules/font-awesome/**/*',
+    '!node_modules/font-awesome/{less,less/*}',
+    '!node_modules/font-awesome/{scss,scss/*}',
+    '!node_modules/font-awesome/.*',
+    '!node_modules/font-awesome/*.{txt,json,md}',
+  ])
+    .pipe(gulp.dest('public/vendor/font-awesome'));
   // jQuery
-  gulp.src([
-      'node_modules/jquery/dist/*',
-      '!node_modules/jquery/dist/core.js'
-    ])
-    .pipe(gulp.dest('public/vendor/jquery'))
+  const jquery = gulp.src([
+    'node_modules/jquery/dist/*',
+    '!node_modules/jquery/dist/core.js',
+  ])
+    .pipe(gulp.dest('public/vendor/jquery'));
   // jQuery Easing
-  gulp.src([
-      'node_modules/jquery.easing/*.js'
-    ])
-    .pipe(gulp.dest('public/vendor/jquery-easing'))
-});
-// Compile SCSS
-gulp.task('css:compile', function() {
-  return gulp.src('public/scss/**/*.scss')
-    .pipe(sass.sync({
-      outputStyle: 'expanded'
-    }).on('error', sass.logError))
-    .pipe(gulp.dest('public/css'))
-});
-// Minify CSS
-gulp.task('css:minify', ['css:compile'], function() {
-  return gulp.src([
-      'public/css/*.css',
-      '!public/css/*.min.css'
-    ])
-    .pipe(cleanCSS())
-    .pipe(rename({
-      suffix: '.min'
+  const jqueryEasing = gulp.src([
+    'node_modules/jquery.easing/*.js',
+  ])
+    .pipe(gulp.dest('public/vendor/jquery-easing'));
+  return merge(bootstrap, fontAwesome, jquery, jqueryEasing);
+}
+
+// CSS task
+function css() {
+  return gulp
+    .src('./public/scss/**/*.scss')
+    .pipe(plumber())
+    .pipe(sass({
+      outputStyle: 'expanded',
+      includePaths: './node_modules',
     }))
-    .pipe(gulp.dest('public/css'));
-});
-// CSS
-gulp.task('css', ['css:compile', 'css:minify']);
-// Minify JavaScript
-gulp.task('js:minify', function() {
-  return gulp.src([
-      'public/js/*.js',
-      '!public/js/*.min.js'
+    .on('error', sass.logError)
+    .pipe(autoprefixer({
+      browsers: ['last 2 versions'],
+      cascade: false,
+    }))
+    .pipe(gulp.dest('./public/css'))
+    .pipe(rename({
+      suffix: '.min',
+    }))
+    .pipe(cleanCSS())
+    .pipe(gulp.dest('./public/css'));
+}
+
+// JS task
+function js() {
+  return gulp
+    .src([
+      './public/js/*.js',
+      '!./public/js/*.min.js',
     ])
     .pipe(uglify())
     .pipe(rename({
-      suffix: '.min'
+      suffix: '.min',
     }))
-    .pipe(gulp.dest('public/js'));
-});
-// JS
-gulp.task('js', ['js:minify']);
+    .pipe(gulp.dest('./public/js'));
+}
 
-// Default task
-gulp.task('default', ['css', 'js', 'vendor']);
-// Dev task
-gulp.task('dev', ['css', 'js'], function() {
-  gulp.watch('public/scss/**/*.scss', ['css']);
-  gulp.watch('public/js/*.js', ['js']);
-});
+// Watch files
+function watchFiles() {
+  gulp.watch('./public/scss/**/*', css);
+  gulp.watch('./public/js/**/*', js);
+}
+
+// Define tasks
+const vendor = gulp.series(modules);
+const build = gulp.series(vendor, gulp.parallel(css, js));
+const watch = gulp.series(build, watchFiles);
+
+// Export tasks
+exports.css = css;
+exports.js = js;
+exports.clean = clean;
+exports.vendor = vendor;
+exports.build = build;
+exports.watch = watch;
+exports.default = build;
