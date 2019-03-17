@@ -5,11 +5,14 @@ class GravityPage extends React.Component {
   render() {
     return (
       <ApplicationLayout data={this.props}>
-        <div className="page-title">Welcome to your Gravity App</div>
+        <div className="page-title">Election 2020 <p>
+        Please log in to view the candidates and submit your votes.
+        </p>
+        </div>
 
             <div className="card card-register mx-auto">
               <div className="card-header bg-custom text-light h5">
-                App Status
+                Voting dApp Status
               </div>
               <div className="card-body">
                 <div className="table-responsive">
@@ -20,7 +23,7 @@ class GravityPage extends React.Component {
                   >
                     <tbody>
                       <tr>
-                        <td>App Passphrase</td>
+                        <td>dApp Passphrase</td>
                         <td
                           className={
                             this.props.requirements.passphrase
@@ -34,7 +37,7 @@ class GravityPage extends React.Component {
                         </td>
                       </tr>
                       <tr>
-                        <td>App Address</td>
+                        <td>dApp Address</td>
                         <td
                           className={
                             this.props.requirements.address
@@ -48,7 +51,7 @@ class GravityPage extends React.Component {
                         </td>
                       </tr>
                       <tr>
-                        <td>App Public Key</td>
+                        <td>dApp Public Key</td>
                         <td
                           className={
                             this.props.requirements.public_key
@@ -62,7 +65,7 @@ class GravityPage extends React.Component {
                         </td>
                       </tr>
                       <tr>
-                        <td>App Data Encryption</td>
+                        <td>dApp Data Encryption</td>
                         <td
                           className={
                             this.props.requirements.encryption

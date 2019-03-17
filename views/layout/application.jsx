@@ -11,7 +11,9 @@ export default class ApplicationLayout extends React.Component {
   render() {
     const linksList = (
       <div>
-<li className="nav-item"><a className="nav-link" href="/public_voting"><i className="fa fa-fw fa-file" />{' '}<span>Public Voting</span></a></li>
+<li className="nav-item"><a className="nav-link" href="/presidential_race"><i className="fa fa-fw fa-file" />{' '}<span>Presidential Race</span></a></li>
+<li className="nav-item"><a className="nav-link" href="/secretarial_race"><i className="fa fa-fw fa-file" />{' '}<span>Secretarial Race</span></a></li>
+<li className="nav-item"><a className="nav-link" href="/clerk_race"><i className="fa fa-fw fa-file" />{' '}<span>Clerical Race</span></a></li>
 {false && 'Generated plop links go here'}
       </div>
     );
@@ -21,14 +23,19 @@ export default class ApplicationLayout extends React.Component {
         <a className="navbar-brand" href="/">
           {process.env.APPNAME ? (
             <div>
-              <i className="fa fa-fw fa-globe" alt="yourBrand" />
+              <img
+                src="/img/sigwo-shield2.png"
+                //className="pb-1"
+                //alt="sigwo"
+                height="32px"
+              />
               {' '}
-              <span>YourBrand</span>
+              <span>Sigwo Technologies</span>
             </div>
           ) : (
             <div>
               <img
-                src="/img/logo.png"
+                src="/img/sigwo-shield2.png"
                 //className="pb-1"
                 alt="sigwo"
                 height="32px"
@@ -93,15 +100,20 @@ export default class ApplicationLayout extends React.Component {
         <div className="container-fluid">
           <a className="navbar-brand" href="/gravity">
             {process.env.APPNAME ? (
-              <div>
-                <i className="fa fa-fw fa-globe" alt="yourBrand" />
-                {' '}
-                <span>YourBrand</span>
-              </div>
+            <div>
+              <img
+                src="/img/sigwo-shield2.png"
+                //className="pb-1"
+                //alt="sigwo"
+                height="32px"
+              />
+              {' '}
+              <span>Sigwo Technologies</span>
+            </div>
             ) : (
               <div>
                 <img
-                  src="/img/logo.png"
+                  src="/img/sigwo-shield2.png"
                   //className="pb-1"
                   alt="sigwo"
                   height="32px"
@@ -232,12 +244,12 @@ export default class ApplicationLayout extends React.Component {
                   <div className="copyright text-center my-auto">
                     {process.env.APPNAME ? (
                       <div>
-                        <div>Copyright © 2018 YourBrand</div>
+                        <div>Copyright © 2019 Sigwo Technologies</div>
                         <div className="mt-2 small">powered by Gravity</div>
                       </div>
                     ) : (
                       <div>
-                        <div>Copyright © 2018 Sigwo Technologies</div>
+                        <div>Copyright © 2019 Sigwo Technologies</div>
                         <div className="mt-2 small">powered by Gravity</div>
                       </div>
                     )}

@@ -6,18 +6,16 @@ import toastr from 'toastr';
 class DataRow extends React.Component {
   constructor(props) {
     super(props);
-    const vote = this.props.parent.state.votes[this.props.vote];
-    const record = vote.vote_record;
+    const clerk = this.props.parent.state.clerks[this.props.clerk];
+    const record = clerk.clerk_record;
 
     this.state = {
-      voteData: this.props.parent.state.votes[this.props.vote],
-      Position: record.Position,
-      Candidate: record.Candidate,
+      clerkData: this.props.parent.state.clerks[this.props.clerk],
+      Name: record.Name,
       Party: record.Party,
-      VoteFor: JSON.stringify(record.VoteFor),
-      votes: [],
+      clerks: [],
       edit_mode: false,
-      date: (new Date(vote.date)).toLocaleString(),
+      date: (new Date(clerk.date)).toLocaleString(),
       submitted: false,
     };
 
@@ -32,10 +30,6 @@ class DataRow extends React.Component {
     });
   }
 
-  VoteForUpdate() {
-    const newValue = !this.state.VoteFor;
-    this.setState({ VoteFor: newValue });
-  }
 
   updateRecord(event) {
     event.preventDefault();
@@ -49,11 +43,9 @@ class DataRow extends React.Component {
     });
 
     const record = {
-      id: this.state.voteData.id,
-      Position: this.state.Position,
-      Candidate: this.state.Candidate,
+      id: this.state.clerkData.id,
+      Name: this.state.Name,
       Party: this.state.Party,
-      VoteFor: this.state.VoteFor,
       address: this.props.user.record.account,
       date_confirmed: Date.now(),
       user_id: this.props.user.id,
@@ -62,7 +54,7 @@ class DataRow extends React.Component {
       user_address: this.props.user.record.account,
     };
 
-    axios.put('/api/votes', { data: record })
+    axios.put('/api/clerks', { data: record })
       .then((response) => {
         if (response.data.success) {
           page.setState({
@@ -101,38 +93,25 @@ class DataRow extends React.Component {
     const form = (
         <tr className="text-center">
             <td>
-                <input placeholder="" value={this.state.Position } className="form-control" onChange={this.handleChange.bind(this, 'Position')} /><br />
-            </td>
-            <td>
-                <input placeholder="" value={this.state.Candidate } className="form-control" onChange={this.handleChange.bind(this, 'Candidate')} /><br />
+                <input placeholder="" value={this.state.Name } className="form-control" onChange={this.handleChange.bind(this, 'Name')} /><br />
             </td>
             <td>
                 <input placeholder="" value={this.state.Party } className="form-control" onChange={this.handleChange.bind(this, 'Party')} /><br />
             </td>
-            <td>
-                <div className="status-toggle">
-                <label className={'switch'}>
-                    <input type="checkbox" onChange={this.VoteForUpdate.bind(this)} checked={this.state.VoteFor || false} />
-                    <span className={'slider round'}></span>
-                </label><br />
-                </div>
-            </td>
             <td>{this.state.date}</td>
             <td>
                 <button className="btn btn-danger" onClick={this.editMode.bind(this)}>Cancel</button><br /><br />
-                <button className="btn btn-success" disabled={this.state.submitted} onClick={this.updateRecord.bind(this)}>{this.state.submitted ? 'Saving...' : 'Save'}</button>
+                <button className="btn btn-success" disabled={this.state.submitted} onClick={this.updateRecord.bind(this)}>{this.state.submitted ? 'Voting...' : 'Vote'}</button>
             </td>
         </tr>
     );
 
-    const voteInfo = this.props.parent.state.votes[this.props.vote];
+    const clerkInfo = this.props.parent.state.clerks[this.props.clerk];
 
     const readOnly = (
-      <tr className="text-center" key={`row-${(voteInfo.id)}-data`}>
-          <td>{voteInfo.vote_record.Position}</td>
-          <td>{voteInfo.vote_record.Candidate}</td>
-          <td>{voteInfo.vote_record.Party}</td>
-          <td>{String(voteInfo.vote_record.VoteFor)}</td>
+      <tr className="text-center" key={`row-${(clerkInfo.id)}-data`}>
+          <td>{clerkInfo.clerk_record.Name}</td>
+          <td>{clerkInfo.clerk_record.Party}</td>
           <td>{this.state.date}</td>
           <td>
               <button className="btn btn-success" onClick={this.editMode.bind(this)}>Edit</button>
@@ -146,22 +125,19 @@ class DataRow extends React.Component {
   }
 }
 
-class PublicVotingComponent extends React.Component {
+class ClerkRaceComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      Position: '',
-      Candidate: '',
+      Name: '',
       Party: '',
-      VoteFor: false,
-      votes: [],
+      clerks: [],
       submitted: false,
       update_submitted: false,
     };
     this.handleChange = this.handleChange.bind(this);
     this.createRecord = this.createRecord.bind(this);
 
-    this.VoteForUpdate = this.VoteForUpdate.bind(this);
   }
 
 
@@ -171,7 +147,7 @@ class PublicVotingComponent extends React.Component {
 
   resetRecords(newData) {
     this.setState({
-      votes: newData,
+      clerks: newData,
     });
   }
 
@@ -184,11 +160,11 @@ class PublicVotingComponent extends React.Component {
       },
     };
 
-    axios.get(`/api/users/${this.props.user.id}/votes`, config)
+    axios.get(`/api/users/${this.props.user.id}/clerks`, config)
       .then((response) => {
         if (response.data.success) {
           page.setState({
-            votes: response.data.votes,
+            clerks: response.data.clerks,
           });
           page.monitorData();
         } else {
@@ -203,7 +179,7 @@ class PublicVotingComponent extends React.Component {
 
   checkUpdates() {
     const self = this;
-    const currentData = JSON.stringify(this.state.votes);
+    const currentData = JSON.stringify(this.state.clerks);
     const config = {
       headers: {
         user_api_key: this.props.user.record.api_key,
@@ -211,10 +187,10 @@ class PublicVotingComponent extends React.Component {
       },
     };
 
-    axios.get(`/api/users/${this.props.user.id}/votes`, config)
+    axios.get(`/api/users/${this.props.user.id}/clerks`, config)
       .then((response) => {
         if (response.data.success) {
-          const responseData = response.data.votes;
+          const responseData = response.data.clerks;
 
           if (currentData !== JSON.stringify(responseData)) {
             self.resetRecords(responseData);
@@ -240,17 +216,11 @@ class PublicVotingComponent extends React.Component {
 
 
   handleChange(aField, event) {
-    if (aField === 'Position') {
-      this.setState({ Position: event.target.value });
-    }
- else if (aField === 'Candidate') {
-      this.setState({ Candidate: event.target.value });
+    if (aField === 'Name') {
+      this.setState({ Name: event.target.value });
     }
  else if (aField === 'Party') {
       this.setState({ Party: event.target.value });
-    }
- else if (aField === 'VoteFor') {
-      this.setState({ VoteFor: event.target.value });
     }
   }
 
@@ -263,10 +233,8 @@ class PublicVotingComponent extends React.Component {
     const page = this;
 
     const record = {
-      Position: this.state.Position,
-      Candidate: this.state.Candidate,
+      Name: this.state.Name,
       Party: this.state.Party,
-      VoteFor: this.state.VoteFor,
       address: this.props.user.record.account,
       date_confirmed: Date.now(),
       user_id: this.props.user.id,
@@ -275,17 +243,15 @@ class PublicVotingComponent extends React.Component {
       user_address: this.props.user.record.account,
     };
 
-    axios.post('/api/votes', { data: record })
+    axios.post('/api/clerks', { data: record })
       .then((response) => {
         if (response.data.success) {
           page.setState({
-            Position: '',
-            Candidate: '',
+            Name: '',
             Party: '',
-            VoteFor: false,
             submitted: false,
           });
-          toastr.success('vote record submitted to the blockchain. It might take a few minutes for record to be shown below.');
+          toastr.success('clerk record submitted to the blockchain. It might take a few minutes for record to be shown below.');
         } else {
           // console.log(response.data);
           // toastr.error(response.data.message);
@@ -301,33 +267,29 @@ class PublicVotingComponent extends React.Component {
       });
   }
 
-  VoteForUpdate() {
-    const newValue = !this.state.VoteFor;
-    this.setState({ VoteFor: newValue });
-  }
 
   render() {
     const self = this;
 
     const recordList = (
-      this.state.votes.map((vote, index) => <DataRow
+      this.state.clerks.map((clerk, index) => <DataRow
           parent={self}
-          vote={index}
+          clerk={index}
           user={self.props.user}
           public_key={self.props.public_key}
-          key={`row${(vote.id)}`}
+          key={`row${(clerk.id)}`}
           />)
     );
 
     return (
         <div className="container-fluid card">
-            <h1 className="page-title"></h1>
+            <h1 className="page-title">Election 2020</h1>
 
             <div className="">
                 <div className="">
                     <div className="card col-md-8 col-lg-8 p-0 mx-auto my-4">
                         <div className="card-header">
-                            Election 2020
+                        Type in your selection below
                         </div>
                         <div className="card-body form-group">
                         <div className="row">
@@ -342,11 +304,11 @@ class PublicVotingComponent extends React.Component {
                                 </thead>
                                 <tbody>
                                   <tr>
-                                    <td>Steven</td>
+                                    <td>Timmy</td>
                                     <td>Republican</td>
                                   </tr>
                                   <tr>
-                                    <td>Raf</td>
+                                    <td>Seth</td>
                                     <td>RCrypto</td>
                                   </tr>
                                 </tbody>
@@ -356,74 +318,59 @@ class PublicVotingComponent extends React.Component {
                           <div className="col-6">
                             <div className="row">
                                 <div className="col-lg-12 col-md-12">
-                                    <label>Position</label>
-                                    <input placeholder="Type in the Position from the table" value={this.state.Position } className="form-control" onChange={this.handleChange.bind(this, 'Position')} /><br />
-                                </div>
-                                <div className="col-lg-12 col-md-12">
-                                    <label>Candidate</label>
-                                    <input placeholder="Type in the Candidate's name" value={this.state.Candidate } className="form-control" onChange={this.handleChange.bind(this, 'Candidate')} /><br />
+                                    <label>Name</label>
+                                    <input placeholder="" value={this.state.Name } className="form-control" onChange={this.handleChange.bind(this, 'Name')} /><br />
                                 </div>
                                 <div className="col-lg-12 col-md-12">
                                     <label>Party</label>
-                                    <input placeholder="Type in the Candidate's party" value={this.state.Party } className="form-control" onChange={this.handleChange.bind(this, 'Party')} /><br />
-                                </div>
-                                <div className="col-lg-12 col-md-12">
-                                    <label>VoteFor</label>
-                                    <div className="status-toggle">
-                                        <label className={'switch'}>
-                                            <input type="checkbox" onChange={this.VoteForUpdate.bind(this)} checked={this.state.VoteFor || false} />
-                                            <span className={'slider round'}></span>
-                                        </label><br />
-                                    </div>
+                                    <input placeholder="" value={this.state.Party } className="form-control" onChange={this.handleChange.bind(this, 'Party')} /><br />
                                 </div>
                             </div>
-                            <div className="row p-1">
+                            <div className="row p-3">
                                 <div className="col-lg-12 col-md-12 col-xs-12 text-center">
-                                    <button type="button" className="btn btn-outline btn-default" disabled={this.state.submitted} onClick={this.createRecord.bind(this)}><i className="glyphicon glyphicon-edit"></i>  {this.state.submitted ? 'Saving...' : 'Save'}</button>
+                                    <button type="button" className="btn btn-outline btn-default" disabled={this.state.submitted} onClick={this.createRecord.bind(this)}><i className="glyphicon glyphicon-edit"></i>  {this.state.submitted ? 'Voting...' : 'Vote'}</button>
                                 </div>
                             </div>
-                          </div>
                         </div>
                       </div>
                     </div>
+                  </div>
                 </div>
             </div>
 
-            <table className="table table-striped table-bordered table-hover">
-              <thead>
-                  <tr>
-                      <th>Position</th>
-                      <th>Candidate</th>
-                      <th>Party</th>
-                      <th>VoteFor</th>
-                      <th>Created on</th>
-                      <th></th>
-                  </tr>
-              </thead>
-              <tbody>
-                  {recordList}
-              </tbody>
-            </table>
+            {/* <table className="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Party</th>
+                        <th>Created on</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {recordList}
+                </tbody>
+            </table> */}
 
         </div>
     );
   }
 }
 
-const PublicVotingExport = () => {
-  if (document.getElementById('PublicVotingComponent') != null) {
+const ClerkRaceExport = () => {
+  if (document.getElementById('ClerkRaceComponent') != null) {
     const element = document.getElementById('props');
     const props = JSON.parse(element.getAttribute('data-props'));
 
     render(
-      <PublicVotingComponent
+      <ClerkRaceComponent
       user={props.user}
       validation={props.validation}
       public_key={props.public_key}
       />,
-      document.getElementById('PublicVotingComponent'),
+      document.getElementById('ClerkRaceComponent'),
     );
   }
 };
 
-module.exports = PublicVotingExport();
+module.exports = ClerkRaceExport();
