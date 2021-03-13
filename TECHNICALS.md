@@ -9,7 +9,7 @@ This is a document meant to educate and aid developers on the use of the Gravity
 * Effectivly encrypts and backs up sensitive information
 
 ### What is the Jupiter Blockchain?
-* A fork ofo the NXT blockchain.
+* A clone of the NXT blockchain.
 * NXT blockchain API calls work and perform exactly the same. 
 * Reference the [official API Guide](https://nxtwiki.org/wiki/The_Nxt_API) for new blockchain features dev in Gravity
 
